@@ -2,7 +2,7 @@
 Author: Ellen Liu
 Last Edit: 8/23/2017
 
-#--STILL IN DEVELOPMENT--
+# --STILL IN DEVELOPMENT--
 
 ## Description of this app
 This application shows places of interest around a location. It uses Google Maps API to display information about the location and calculates routes to the selected location.
