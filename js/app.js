@@ -28,6 +28,10 @@ var Map = function() {
     center: {lat: 37.77493, lng: -122.419416},
     zoom: 13
   });
+}
+
+var ViewModel = function() {
+  var currentMap = new Map();
 
   locs.forEach(function(loc, index) {
     var position = loc.location;
@@ -40,10 +44,6 @@ var Map = function() {
 
     markers.push(marker);
   });
-}
-
-var ViewModel = function() {
-  var currentMap = new Map();
 }
 
 function init() {
