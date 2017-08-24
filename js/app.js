@@ -32,18 +32,38 @@ var Map = function() {
 
 var ViewModel = function() {
   var currentMap = new Map();
+  var infoWindow = new google.maps.InfoWindow();
 
   locs.forEach(function(loc, index) {
     var position = loc.location;
+    var title = loc.title;
+    
     var marker = new google.maps.Marker({
       map: map,
+      title: title,
       position: position,
       animation: google.maps.Animation.Drop,
       id: index
     })
 
     markers.push(marker);
+
+    marker.addListener('click', function() {
+      showInfoWindow(this, infoWindow);
+    });
   });
+}
+
+function showInfoWindow(marker, infoWindow) {
+  if(infoWindow.marker != marker) {
+    infoWindow.marker = marker;
+    infoWindow.setContent('<div>' + marker.title + '</div>');
+    infoWindow.open(map, marker);
+
+    infoWindow.addListener('closeclick', function() {
+      infoWindow.setMarker = null;
+    });
+  }
 }
 
 function init() {
