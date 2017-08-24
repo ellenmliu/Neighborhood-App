@@ -24,6 +24,7 @@ var locs = [
   }]
 
 var Map = function() {
+  // Initialize background with a map of San Francisco as default
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 37.77493, lng: -122.419416},
     zoom: 13
@@ -32,10 +33,12 @@ var Map = function() {
 
 var ViewModel = function() {
   var self = this;
+  // Observable that controls the hamburger icon and options bar visibility
   self.hamburger = ko.observable(false);
   var currentMap = new Map();
   var infoWindow = new google.maps.InfoWindow();
 
+  // Creates a marker for each of the location
   locs.forEach(function(loc, index) {
     var position = loc.location;
     var title = loc.title;
@@ -50,16 +53,20 @@ var ViewModel = function() {
 
     markers.push(marker);
 
+    // The selected marker will show up with an info window that provides
+    // information about the location
     marker.addListener('click', function() {
       showInfoWindow(this, infoWindow);
     });
   });
 
+  // Sets the boolean to the opposite of itself
   self.toggleHamburger = function() {
     self.hamburger(!self.hamburger());
   }
 }
 
+// Toggles between the animation between the hamburger icon and a close icon
 ko.bindingHandlers.transition = {
   update: function(element, valueAccessor) {
     var value = valueAccessor();
@@ -69,6 +76,7 @@ ko.bindingHandlers.transition = {
   }
 };
 
+// Toggles when the option box slides over and back
 ko.bindingHandlers.slide = {
   update: function(element, valueAccessor) {
     var value = valueAccessor();
@@ -78,12 +86,16 @@ ko.bindingHandlers.slide = {
   }
 };
 
+// Shows the information of the location in the info window when the marker is
+// selected.
 function showInfoWindow(marker, infoWindow) {
+  // Checks if the info window isn't already opened
   if(infoWindow.marker != marker) {
     infoWindow.marker = marker;
     infoWindow.setContent('<div>' + marker.title + '</div>');
     infoWindow.open(map, marker);
 
+    // Clears the marker property when the info window closes
     infoWindow.addListener('closeclick', function() {
       infoWindow.setMarker = null;
     });
