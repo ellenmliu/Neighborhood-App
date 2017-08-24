@@ -6,4 +6,57 @@ html, body {
 
 #map {
   height: 100%;
+  bottom: 0px;
+  left: 0px;
+  position: absolute;
+  right: 0px;
+}
+
+.container {
+  height:100%;
+  position: relative;
+}
+
+.hamburger {
+  padding: 50px 20px;
+  display: inline-block;
+  cursor: pointer;
+  position: fixed;
+  z-index: 2;
+}
+
+.bar1, .bar2, .bar3 {
+  width: 35px;
+  height: 5px;
+  background-color: #333;
+  margin: 6px 0;
+  transition: 0.4s;
+  border-radius: 2px;
+}
+
+.options-box {
+  background: #ffffff;
+  height: 100%;
+  width: 0px;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  overflow-x: hidden;
+  transition: 0.5s;
+  position: fixed;
+}
+
+/* Animation for the hamburger bars */
+.change .bar1 {
+  -webkit-transform: rotate(-45deg) translate(-9px, 6px) ;
+  transform: rotate(-45deg) translate(-9px, 6px) ;
+}
+
+.change .bar2 {
+  opacity: 0;
+}
+
+.change .bar3 {
+  -webkit-transform: rotate(45deg) translate(-8px, -8px) ;
+  transform: rotate(45deg) translate(-8px, -8px) ;
 }

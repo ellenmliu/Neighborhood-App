@@ -31,13 +31,15 @@ var Map = function() {
 }
 
 var ViewModel = function() {
+  var self = this;
+  self.hamburger = ko.observable(false);
   var currentMap = new Map();
   var infoWindow = new google.maps.InfoWindow();
 
   locs.forEach(function(loc, index) {
     var position = loc.location;
     var title = loc.title;
-    
+
     var marker = new google.maps.Marker({
       map: map,
       title: title,
@@ -52,7 +54,29 @@ var ViewModel = function() {
       showInfoWindow(this, infoWindow);
     });
   });
+
+  self.toggleHamburger = function() {
+    self.hamburger(!self.hamburger());
+  }
 }
+
+ko.bindingHandlers.transition = {
+  update: function(element, valueAccessor) {
+    var value = valueAccessor();
+    var valueUnwrapped = ko.unwrap(value);
+
+    valueUnwrapped? element.classList.add("change") : element.classList.remove("change");
+  }
+};
+
+ko.bindingHandlers.slide = {
+  update: function(element, valueAccessor) {
+    var value = valueAccessor();
+    var valueUnwrapped = ko.unwrap(value);
+
+    valueUnwrapped? element.style.width = "250px" : element.style.width = "0px";
+  }
+};
 
 function showInfoWindow(marker, infoWindow) {
   if(infoWindow.marker != marker) {
