@@ -88,6 +88,8 @@ var styles = [
     ]
   }
 ];
+var defaultColor;
+var selectedColor;
 
 var Map = function() {
   // Initialize background with a map of San Francisco as default
@@ -105,6 +107,9 @@ var ViewModel = function() {
   var currentMap = new Map();
   var infoWindow = new google.maps.InfoWindow();
 
+  defaultColor = makeMarkerIcon('f44242');
+  selectedColor = makeMarkerIcon('ffff24');
+
   // Creates a marker for each of the location
   locs.forEach(function(loc, index) {
     var position = loc.location;
@@ -112,6 +117,7 @@ var ViewModel = function() {
 
     var marker = new google.maps.Marker({
       map: map,
+      icon: defaultColor,
       title: title,
       position: position,
       animation: google.maps.Animation.DROP,
@@ -123,6 +129,10 @@ var ViewModel = function() {
     // The selected marker will show up with an info window that provides
     // information about the location
     marker.addListener('click', function() {
+      markers.forEach(function(data) {
+        data.setIcon(defaultColor);
+      });
+      this.setIcon(selectedColor);
       showInfoWindow(this, infoWindow);
     });
   });
@@ -168,6 +178,17 @@ ko.bindingHandlers.slide = {
   }
 };
 
+function makeMarkerIcon(color) {
+  var markerImage = new google.maps.MarkerImage(
+    'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ color +
+    '|40|_|%E2%80%A2',
+    new google.maps.Size(21, 34),
+    new google.maps.Point(0, 0),
+    new google.maps.Point(10, 34),
+    new google.maps.Size(21,34));
+  return markerImage;
+}
+
 // Shows the information of the location in the info window when the marker is
 // selected.
 function showInfoWindow(marker, infoWindow) {
@@ -178,6 +199,7 @@ function showInfoWindow(marker, infoWindow) {
 
     // Clears the marker property when the info window closes
     infoWindow.addListener('closeclick', function() {
+      infoWindow.marker.setIcon(defaultColor);
       infoWindow.setMarker = null;
     });
 
