@@ -12,6 +12,11 @@ html, body {
   right: 0px;
 }
 
+#pano {
+  width: 200px;
+  height: 200px;
+}
+
 .container {
   height:100%;
   position: relative;

@@ -93,14 +93,43 @@ function showInfoWindow(marker, infoWindow) {
   if(infoWindow.marker != marker) {
     infoWindow.marker = marker;
     infoWindow.setContent('<div>' + marker.title + '</div>');
-    infoWindow.open(map, marker);
 
     // Clears the marker property when the info window closes
     infoWindow.addListener('closeclick', function() {
       infoWindow.setMarker = null;
     });
+
+    var streetview = new google.maps.StreetViewService();
+    var radius = 50;
+
+    // If the street view panorama is found, then calculate the position and heading
+    // to get the panorama of the area and the info window will display the image.
+    // Otherwise, it will indicate to the user that the street view is not found
+    function getStreetView(data, status) {
+      if(status == google.maps.StreetViewStatus.OK) {
+        var nearStreetViewLocation = data.location.latLng;
+        var heading = google.maps.geometry.spherical.computeHeading(nearStreetViewLocation, marker.position);
+        infoWindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
+
+        var panoramaOptions = {
+          position: nearStreetViewLocation,
+          pov: {
+            heading: heading,
+            pitch: 30
+          }
+        };
+
+        var panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'), panoramaOptions);
+      } else {
+        infoWindow.setContent('<div>' + marker.title + '</div><div>No Street View Found</div>');
+      }
+    }
+    streetview.getPanoramaByLocation(marker.position, radius, getStreetView);
+
+    infoWindow.open(map, marker);
   }
 }
+
 
 function init() {
   ko.applyBindings(new ViewModel());
