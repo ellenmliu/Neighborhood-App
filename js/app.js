@@ -90,6 +90,7 @@ var styles = [
 ];
 var defaultColor;
 var selectedColor;
+var polygon = null;
 
 var Map = function() {
   // Initialize background with a map of San Francisco as default
@@ -106,6 +107,15 @@ var ViewModel = function() {
   self.hamburger = ko.observable(false);
   var currentMap = new Map();
   var infoWindow = new google.maps.InfoWindow();
+
+  var drawingManager = new google.maps.drawing.DrawingManager({
+    drawingMode: google.maps.drawing.OverlayType.POLYGON,
+    drawingControl: true,
+    drawingControlOptions: {
+      position: google.maps.ControlPosition.TOP_LEFT,
+      drawingModes: [google.maps.drawing.OverlayType.POLYGON]
+    }
+  });
 
   defaultColor = makeMarkerIcon('f44242');
   selectedColor = makeMarkerIcon('ffff24');
@@ -156,6 +166,34 @@ var ViewModel = function() {
       data.setMap(null);
     })
   }
+
+  self.toggleDrawing = function() {
+    if(drawingManager.map) {
+      drawingManager.setMap(null);
+      if(polygon !== null) {
+        polygon.setMap(null);
+      }
+    } else {
+      drawingManager.setMap(map);
+    }
+    self.hamburger(!self.hamburger());
+  }
+
+  drawingManager.addListener('overlaycomplete', function(event) {
+    if(polygon) {
+      polygon.setMap(null);
+      self.hideListings(markers);
+    }
+
+    drawingManager.setDrawingMode(null);
+    polygon = event.overlay;
+    polygon.setEditable(true);
+
+    searchWithinPolygon();
+
+    polygon.getPath().addListener('set_at', searchWithinPolygon);
+    polygon.getPath().addListener('insert_at', searchWithinPolygon);
+  })
 }
 
 // Toggles between the animation between the hamburger icon and a close icon
@@ -187,6 +225,16 @@ function makeMarkerIcon(color) {
     new google.maps.Point(10, 34),
     new google.maps.Size(21,34));
   return markerImage;
+}
+
+function searchWithinPolygon() {
+  markers.forEach(function(data){
+    if (google.maps.geometry.poly.containsLocation(data.position, polygon)) {
+      data.setMap(map);
+    } else {
+      data.setMap(null);
+    }
+  });
 }
 
 // Shows the information of the location in the info window when the marker is
