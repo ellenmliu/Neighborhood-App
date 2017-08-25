@@ -64,6 +64,21 @@ var ViewModel = function() {
   self.toggleHamburger = function() {
     self.hamburger(!self.hamburger());
   }
+
+  self.showListings = function() {
+    var bounds = new google.maps.LatLngBounds();
+    markers.forEach(function(data) {
+      data.setMap(map);
+      bounds.extend(data.position);
+    })
+    map.fitBounds(bounds);
+  }
+
+  self.hideListings = function() {
+    markers.forEach(function(data) {
+      data.setMap(null);
+    })
+  }
 }
 
 // Toggles between the animation between the hamburger icon and a close icon

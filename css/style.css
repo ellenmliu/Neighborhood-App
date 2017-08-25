@@ -23,7 +23,7 @@ html, body {
 }
 
 .hamburger {
-  padding: 50px 20px;
+  margin: 50px 20px;
   display: inline-block;
   cursor: pointer;
   position: fixed;
@@ -49,6 +49,12 @@ html, body {
   overflow-x: hidden;
   transition: 0.5s;
   position: fixed;
+}
+
+.options {
+  margin-top: 120px;
+  display: flex;
+  justify-content: space-around;
 }
 
 /* Animation for the hamburger bars */
