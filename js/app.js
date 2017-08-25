@@ -22,12 +22,79 @@ var locs = [
     title: 'Walt Disney Museum',
     location: {lat:  37.801339, lng: -122.458599}
   }]
+var styles = [
+  {
+    featureType: 'water',
+    stylers: [
+      { color: '#3cc1d8' }
+    ]
+  },{
+    featureType: 'administrative',
+    elementType: 'labels.text.stroke',
+    stylers: [
+      { color: '#ffd930' },
+      { weight: 1 }
+    ]
+  },{
+    featureType: 'administrative',
+    elementType: 'labels.text.fill',
+    stylers: [
+      { color: '#000000' }
+    ]
+  },{
+    featureType: 'road.highway',
+    elementType: 'geometry.stroke',
+    stylers: [
+      { color: '#f2c00c' },
+      { lightness: -40 }
+    ]
+  },{
+    featureType: 'transit.station',
+    stylers: [
+      { weight: 9 },
+      { hue: '#e85113' }
+    ]
+  },{
+    featureType: 'road.highway',
+    elementType: 'labels.icon',
+    stylers: [
+      { visibility: 'on' }
+    ]
+  },{
+    featureType: 'water',
+    elementType: 'labels.text.stroke',
+    stylers: [
+      { lightness: 100 }
+    ]
+  },{
+    featureType: 'water',
+    elementType: 'labels.text.fill',
+    stylers: [
+      { lightness: -100 }
+    ]
+  },{
+    featureType: 'poi',
+    elementType: 'geometry',
+    stylers: [
+      { visibility: 'on' },
+      { color: '#f0e4d3' }
+    ]
+  },{
+    featureType: 'road.highway',
+    elementType: 'geometry.fill',
+    stylers: [
+      { color: '#efe9e4' },
+      { lightness: -25 }
+    ]
+  }
+];
 
 var Map = function() {
   // Initialize background with a map of San Francisco as default
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 37.77493, lng: -122.419416},
-    zoom: 13
+    zoom: 13,
+    styles: styles
   });
 }
 
