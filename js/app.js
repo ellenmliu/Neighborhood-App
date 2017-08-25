@@ -114,7 +114,7 @@ var ViewModel = function() {
       map: map,
       title: title,
       position: position,
-      animation: google.maps.Animation.Drop,
+      animation: google.maps.Animation.DROP,
       id: index
     })
 
