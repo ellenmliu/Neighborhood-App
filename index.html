@@ -22,14 +22,14 @@
     </div>
     <div class="options-box" data-bind="slide: hamburger">
       <div class="options">
-        <input id="show-listings" type="button" value="Show Listings" data-bind="click: showListings">
-        <input id="show-listings" type="button" value="Hide Listings" data-bind="click: hideListings">
-      </div>
-      <hr>
-      <div class="drawing-box">
-        <span>Draw to select area</span>
+        <input id="show-listings" type="button" value="Show" data-bind="click: showListings">
+        <input id="show-listings" type="button" value="Hide" data-bind="click: hideListings">
         <input id="toggle-drawing" type="button" value="Drawing Tool" data-bind="click: toggleDrawing">
       </div>
+    
+      <ul class="listoflocs" data-bind="foreach: locations">
+        <li class="locationSelect" data-bind="text: title"></li>
+      </ul>
     </div>
   </div>
   <script src="js/libs/jquery.min.js"></script>

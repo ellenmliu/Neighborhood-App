@@ -105,6 +105,7 @@ var ViewModel = function() {
   var self = this;
   // Observable that controls the hamburger icon and options bar visibility
   self.hamburger = ko.observable(false);
+  self.locations = ko.observableArray(locs);
   var currentMap = new Map();
   var infoWindow = new google.maps.InfoWindow();
 

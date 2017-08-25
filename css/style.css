@@ -57,8 +57,18 @@ html, body {
   justify-content: space-around;
 }
 
-hr {
-  margin:20px;
+.drawing-box {
+  display: flex;
+  justify-content: space-around;
+}
+
+li {
+  right: 0px;
+  left: 0px;
+  width: 100%;
+  list-style: none;
+  padding: 30px;
+  border-top: 1px solid #D0D7D9;
 }
 
 /* Animation for the hamburger bars */
