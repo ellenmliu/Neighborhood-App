@@ -26,9 +26,9 @@
         <input id="show-listings" type="button" value="Hide" data-bind="click: hideListings">
         <input id="toggle-drawing" type="button" value="Drawing Tool" data-bind="click: toggleDrawing">
       </div>
-    
+
       <ul class="listoflocs" data-bind="foreach: locations">
-        <li class="locationSelect" data-bind="text: title"></li>
+        <li class="locationSelect" data-bind="text: title, click: $parent.selectListing"></li>
       </ul>
     </div>
   </div>

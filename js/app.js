@@ -148,6 +148,17 @@ var ViewModel = function() {
     });
   });
 
+  self.selectListing = function(thisListing) {
+    markers.forEach(function(data) {
+      data.setIcon(defaultColor);
+    });
+    var selected = markers.find(function(element) {
+      return element.title == thisListing.title;
+    })
+    selected.setIcon(selectedColor);
+    showInfoWindow(selected, infoWindow);
+  }
+
   // Sets the boolean to the opposite of itself
   self.toggleHamburger = function() {
     self.hamburger(!self.hamburger());
