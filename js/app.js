@@ -4,23 +4,28 @@ var markers = [];
 var locs = [
   {
     title: 'Exploratorium',
-    location: {lat: 37.800797, lng: -122.398868}
+    location: {lat: 37.800797, lng: -122.398868},
+    visible: ko.observable(true)
   },
   {
     title: 'Union Square',
-    location: {lat:  37.788014, lng: -122.407477}
+    location: {lat:  37.788014, lng: -122.407477},
+    visible: ko.observable(true)
   },
   {
     title: 'AT&T Park',
-    location:{lat: 37.779208, lng: -122.390157}
+    location:{lat: 37.779208, lng: -122.390157},
+    visible: ko.observable(true)
   },
   {
     title: 'Golden Gate Park',
-    location: {lat: 37.769421, lng: -122.486214}
+    location: {lat: 37.769421, lng: -122.486214},
+    visible: ko.observable(true)
   },
   {
     title: 'Walt Disney Museum',
-    location: {lat:  37.801339, lng: -122.458599}
+    location: {lat:  37.801339, lng: -122.458599},
+    visible: ko.observable(true)
   }]
 var styles = [
   {
@@ -105,7 +110,8 @@ var ViewModel = function() {
   var self = this;
   // Observable that controls the hamburger icon and options bar visibility
   self.hamburger = ko.observable(false);
-  self.locations = ko.observableArray(locs);
+  self.locations = ko.observableArray([]);
+
   var currentMap = new Map();
   var infoWindow = new google.maps.InfoWindow();
 
@@ -123,6 +129,8 @@ var ViewModel = function() {
 
   // Creates a marker for each of the location
   locs.forEach(function(loc, index) {
+    self.locations.push(loc);
+    
     var position = loc.location;
     var title = loc.title;
 
@@ -170,6 +178,10 @@ var ViewModel = function() {
       data.setMap(map);
       bounds.extend(data.position);
     })
+
+    for(var data in self.locations()) {
+      self.locations()[data].visible(true);
+    }
     map.fitBounds(bounds);
   }
 
@@ -177,6 +189,9 @@ var ViewModel = function() {
     markers.forEach(function(data) {
       data.setMap(null);
     })
+    for(var data in self.locations()) {
+      self.locations()[data].visible(false);
+    }
   }
 
   self.toggleDrawing = function() {

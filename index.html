@@ -28,7 +28,7 @@
       </div>
 
       <ul class="listoflocs" data-bind="foreach: locations">
-        <li class="locationSelect" data-bind="text: title, click: $parent.selectListing"></li>
+        <li class="locationSelect" data-bind="text: title, click: $parent.selectListing, visible: $data.visible()"></li>
       </ul>
     </div>
   </div>
