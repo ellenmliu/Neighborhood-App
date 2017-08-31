@@ -130,7 +130,7 @@ var ViewModel = function() {
   // Creates a marker for each of the location
   locs.forEach(function(loc, index) {
     self.locations.push(loc);
-    
+
     var position = loc.location;
     var title = loc.title;
 
@@ -216,7 +216,7 @@ var ViewModel = function() {
     polygon = event.overlay;
     polygon.setEditable(true);
 
-    searchWithinPolygon();
+    searchWithinPolygon(self.locations());
 
     polygon.getPath().addListener('set_at', searchWithinPolygon);
     polygon.getPath().addListener('insert_at', searchWithinPolygon);
@@ -254,12 +254,14 @@ function makeMarkerIcon(color) {
   return markerImage;
 }
 
-function searchWithinPolygon() {
-  markers.forEach(function(data){
+function searchWithinPolygon(locArray) {
+  markers.forEach(function(data, index){
     if (google.maps.geometry.poly.containsLocation(data.position, polygon)) {
       data.setMap(map);
+      locArray[index].visible(true);
     } else {
       data.setMap(null);
+      locArray[index].visible(false);
     }
   });
 }
