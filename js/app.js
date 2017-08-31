@@ -206,6 +206,10 @@ var ViewModel = function() {
     self.hamburger(!self.hamburger());
   }
 
+  self.zoom = function() {
+    zoomToArea();
+  }
+
   drawingManager.addListener('overlaycomplete', function(event) {
     if(polygon) {
       polygon.setMap(null);
@@ -311,6 +315,23 @@ function showInfoWindow(marker, infoWindow) {
   }
 }
 
+function zoomToArea() {
+  var geocoder = new google.maps.Geocoder();
+  var address = document.getElementById('zoom-to-area').value;
+
+  if(address == '') {
+    window.alert('You must enter a location');
+  } else {
+    geocoder.geocode({address: address, componentRestrictions: {locality: 'San Francisco'}}, function(results, status) {
+      if(status == google.maps.GeocoderStatus.OK) {
+        map.setCenter(results[0].geometry.location);
+        map.setZoom(14);
+      } else {
+        window.alert('Location could not be found. Try entering a more specific location.');
+      }
+    });
+  }
+}
 
 function init() {
   ko.applyBindings(new ViewModel());

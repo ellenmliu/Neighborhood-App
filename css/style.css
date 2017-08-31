@@ -52,7 +52,7 @@ html, body {
 }
 
 .options {
-  margin-top: 120px;
+  margin-top: 20px;
   display: flex;
   justify-content: space-around;
 }
@@ -69,6 +69,12 @@ li {
   list-style: none;
   padding: 30px;
   border-top: 1px solid #D0D7D9;
+}
+
+.search {
+  margin: 100px 10px 0px 10px;
+  display: flex;
+  justify-content: space-around;
 }
 
 /* Animation for the hamburger bars */
