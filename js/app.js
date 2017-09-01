@@ -208,7 +208,7 @@ var ViewModel = function() {
 
   self.zoom = function() {
     var searchFor = $('#zoom-to-area-text').val();
-    searchFoursquare(37.77493, -122.419416, searchFor);
+    searchFoursquare(37.77493, -122.419416, searchFor, self.locations);
     zoomToArea();
   }
 
@@ -335,7 +335,7 @@ function zoomToArea() {
   }
 }
 
-function searchFoursquare(lat, long, search) {
+function searchFoursquare(lat, long, search, locArray) {
   var client_id = 'FAXWGJU1T5JKZMQBVUFBBZ0CK1ZXP130JWQ0TMQW33LTIV0C';
   var client_secret = '52TF4CEXKTNKN1HSRREGPWPDVSRA0030ST2H5RG3XQ2IGLWD';
   var url = 'https://api.foursquare.com/v2/venues/search?ll=' + lat + ',' + long + '&query=' + search + '&client_id='+ client_id + '&client_secret=' + client_secret + '&v=20170830&m=foursquare';
@@ -348,7 +348,18 @@ function searchFoursquare(lat, long, search) {
     url: url,
     dataType: 'jsonp',
     success: function(data) {
-      console.log(data);
+      locArray.removeAll();
+
+      var venues = data.response.venues;
+
+      venues.forEach(function(data, index) {
+        var newVenue = {
+          title: data.name,
+          location: {lat: data.location.lat, lng: data.location.lng},
+          visible: ko.observable(true)
+        };
+        locArray.push(newVenue);
+      });
 
       clearTimeout(fsRequestTimeout);
     }
