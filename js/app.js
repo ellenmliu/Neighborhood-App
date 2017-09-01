@@ -1,5 +1,6 @@
 'use strict';
 var map;
+var infoWindow;
 var markers = [];
 var locs = [
   {
@@ -104,6 +105,8 @@ var Map = function() {
     zoom: 13,
     styles: styles
   });
+
+  infoWindow = new google.maps.InfoWindow();
 }
 
 var ViewModel = function() {
@@ -113,7 +116,6 @@ var ViewModel = function() {
   self.locations = ko.observableArray([]);
 
   var currentMap = new Map();
-  var infoWindow = new google.maps.InfoWindow();
 
   var drawingManager = new google.maps.drawing.DrawingManager({
     drawingMode: google.maps.drawing.OverlayType.POLYGON,
@@ -131,29 +133,7 @@ var ViewModel = function() {
   locs.forEach(function(loc, index) {
     self.locations.push(loc);
 
-    var position = loc.location;
-    var title = loc.title;
-
-    var marker = new google.maps.Marker({
-      map: map,
-      icon: defaultColor,
-      title: title,
-      position: position,
-      animation: google.maps.Animation.DROP,
-      id: index
-    })
-
-    markers.push(marker);
-
-    // The selected marker will show up with an info window that provides
-    // information about the location
-    marker.addListener('click', function() {
-      markers.forEach(function(data) {
-        data.setIcon(defaultColor);
-      });
-      this.setIcon(selectedColor);
-      showInfoWindow(this, infoWindow);
-    });
+    createMarker(loc, index);
   });
 
   self.selectListing = function(thisListing) {
@@ -350,6 +330,10 @@ function searchFoursquare(lat, long, search, locArray) {
     success: function(data) {
       locArray.removeAll();
 
+      markers.forEach(function(data) {
+        data.setMap(null);
+      })
+
       var venues = data.response.venues;
 
       venues.forEach(function(data, index) {
@@ -358,12 +342,39 @@ function searchFoursquare(lat, long, search, locArray) {
           location: {lat: data.location.lat, lng: data.location.lng},
           visible: ko.observable(true)
         };
+        createMarker(newVenue, index)
         locArray.push(newVenue);
       });
 
       clearTimeout(fsRequestTimeout);
     }
   })
+}
+
+function createMarker(loc, index) {
+  var position = loc.location;
+  var title = loc.title;
+
+  var marker = new google.maps.Marker({
+    map: map,
+    icon: defaultColor,
+    title: title,
+    position: position,
+    animation: google.maps.Animation.DROP,
+    id: index
+  })
+
+  markers.push(marker);
+
+  // The selected marker will show up with an info window that provides
+  // information about the location
+  marker.addListener('click', function() {
+    markers.forEach(function(data) {
+      data.setIcon(defaultColor);
+    });
+    this.setIcon(selectedColor);
+    showInfoWindow(this, infoWindow);
+  });
 }
 
 function init() {
