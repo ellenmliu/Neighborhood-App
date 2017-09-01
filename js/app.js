@@ -207,7 +207,8 @@ var ViewModel = function() {
   }
 
   self.zoom = function() {
-    searchFoursquare(37.77493, -122.419416);
+    var searchFor = $('#zoom-to-area-text').val();
+    searchFoursquare(37.77493, -122.419416, searchFor);
     zoomToArea();
   }
 
@@ -334,10 +335,10 @@ function zoomToArea() {
   }
 }
 
-function searchFoursquare(lat, long) {
+function searchFoursquare(lat, long, search) {
   var client_id = 'FAXWGJU1T5JKZMQBVUFBBZ0CK1ZXP130JWQ0TMQW33LTIV0C';
   var client_secret = '52TF4CEXKTNKN1HSRREGPWPDVSRA0030ST2H5RG3XQ2IGLWD';
-  var url = 'https://api.foursquare.com/v2/venues/search?ll=' + lat + ',' + long + '&client_id='+ client_id + '&client_secret=' + client_secret + '&v=20170830&m=foursquare';
+  var url = 'https://api.foursquare.com/v2/venues/search?ll=' + lat + ',' + long + '&query=' + search + '&client_id='+ client_id + '&client_secret=' + client_secret + '&v=20170830&m=foursquare';
 
   var fsRequestTimeout = setTimeout(function(){
     window.alert('Failed to get foursquare resources');
