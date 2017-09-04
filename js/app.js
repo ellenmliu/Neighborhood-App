@@ -375,12 +375,12 @@ function searchFoursquare(lat, long, search, locArray) {
           title: data.name,
           location: {lat: data.location.lat, lng: data.location.lng},
           visible: ko.observable(true),
-          category: data.categories.id
+          category: data.categories[0].name
         };
         createMarker(newVenue, index)
         locArray.push(newVenue);
       });
-      //console.log(venues)
+
       clearTimeout(fsRequestTimeout);
     }
   })
