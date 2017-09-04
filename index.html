@@ -25,6 +25,12 @@
         <input id="zoom-to-area-text" type="text" placeholder="Enter your favorite area!">
         <input id="zoom-to-area" type="button" value="Zoom" data-bind="click:zoom">
       </div>
+      <div class="filter-box">
+        <select id="filters" data-bind="foreach: categories">
+          <option data-bind="text: name"></option>
+        </select>
+        <input type="button" value="Filter" data-bind="click: filter">
+      </div>
       <div class="options">
         <input id="show-listings" type="button" value="Show" data-bind="click: showListings">
         <input id="show-listings" type="button" value="Hide" data-bind="click: hideListings">

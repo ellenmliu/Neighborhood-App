@@ -98,6 +98,9 @@ var defaultColor;
 var selectedColor;
 var polygon = null;
 
+var client_id = 'FAXWGJU1T5JKZMQBVUFBBZ0CK1ZXP130JWQ0TMQW33LTIV0C';
+var client_secret = '52TF4CEXKTNKN1HSRREGPWPDVSRA0030ST2H5RG3XQ2IGLWD';
+
 var Map = function() {
   // Initialize background with a map of San Francisco as default
   map = new google.maps.Map(document.getElementById('map'), {
@@ -114,6 +117,7 @@ var ViewModel = function() {
   // Observable that controls the hamburger icon and options bar visibility
   self.hamburger = ko.observable(false);
   self.locations = ko.observableArray([]);
+  self.categories = ko.observableArray([]);
 
   var currentMap = new Map();
 
@@ -192,6 +196,11 @@ var ViewModel = function() {
     zoomToArea();
   }
 
+  self.filter = function() {
+    var category = $('#filters').val();
+    console.log(category);
+  }
+
   drawingManager.addListener('overlaycomplete', function(event) {
     if(polygon) {
       polygon.setMap(null);
@@ -206,6 +215,33 @@ var ViewModel = function() {
 
     polygon.getPath().addListener('set_at', searchWithinPolygon);
     polygon.getPath().addListener('insert_at', searchWithinPolygon);
+  })
+
+  var url = 'https://api.foursquare.com/v2/venues/categories?&client_id='+ client_id + '&client_secret=' + client_secret + '&v=20170830&m=foursquare';
+
+  var fsRequestTimeout = setTimeout(function(){
+    window.alert('Failed to get foursquare resources');
+  }, 8000);
+
+  $.ajax({
+    url: url,
+    dataType: 'jsonp',
+    success: function(data) {
+      var entertainment = data.response.categories[0].categories;
+
+      entertainment.forEach(function(data) {
+        if(data.categories.length > 0) {
+          data.categories.forEach(function(element) {
+            self.categories.push(element);
+          })
+        } else {
+          self.categories.push(data);
+        }
+      });
+
+      console.log(self.categories());
+      clearTimeout(fsRequestTimeout);
+    }
   })
 }
 
@@ -316,8 +352,6 @@ function zoomToArea() {
 }
 
 function searchFoursquare(lat, long, search, locArray) {
-  var client_id = 'FAXWGJU1T5JKZMQBVUFBBZ0CK1ZXP130JWQ0TMQW33LTIV0C';
-  var client_secret = '52TF4CEXKTNKN1HSRREGPWPDVSRA0030ST2H5RG3XQ2IGLWD';
   var url = 'https://api.foursquare.com/v2/venues/search?ll=' + lat + ',' + long + '&query=' + search + '&client_id='+ client_id + '&client_secret=' + client_secret + '&v=20170830&m=foursquare';
 
   var fsRequestTimeout = setTimeout(function(){
@@ -340,12 +374,13 @@ function searchFoursquare(lat, long, search, locArray) {
         var newVenue = {
           title: data.name,
           location: {lat: data.location.lat, lng: data.location.lng},
-          visible: ko.observable(true)
+          visible: ko.observable(true),
+          category: data.categories.id
         };
         createMarker(newVenue, index)
         locArray.push(newVenue);
       });
-
+      //console.log(venues)
       clearTimeout(fsRequestTimeout);
     }
   })

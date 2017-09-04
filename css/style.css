@@ -51,7 +51,17 @@ html, body {
   position: fixed;
 }
 
+select {
+  font-size: 10px;
+}
+
 .options {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.filter-box {
   margin-top: 20px;
   display: flex;
   justify-content: space-around;
