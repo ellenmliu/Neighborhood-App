@@ -198,7 +198,21 @@ var ViewModel = function() {
 
   self.filter = function() {
     var category = $('#filters').val();
-    console.log(category);
+    markers.forEach(function(data) {
+      data.setMap(null);
+    })
+
+    markers = [];
+
+    for(var data in self.locations()) {
+      if(self.locations()[data].category == category) {
+        self.locations()[data].visible(true);
+        createMarker(self.locations()[data],data);
+      } else {
+        self.locations()[data].visible(false);
+      }
+    }
+    console.log(locs)
   }
 
   drawingManager.addListener('overlaycomplete', function(event) {
@@ -383,7 +397,6 @@ function searchFoursquare(lat, long, search, locArray) {
         createMarker(newVenue, index)
         locArray.push(newVenue);
       });
-
       clearTimeout(fsRequestTimeout);
     }
   })
