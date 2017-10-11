@@ -194,7 +194,7 @@ var ViewModel = function() {
 
   self.zoom = function() {
     var searchFor = $('#zoom-to-area-text').val();
-    searchFoursquare(37.77493, -122.419416, searchFor, self.locations);
+    searchFoursquare(37.77493, -122.419416, searchFor, self.locations, self.categories);
     zoomToArea();
   }
 
@@ -347,7 +347,7 @@ function zoomToArea() {
   }
 }
 
-function searchFoursquare(lat, long, search, locArray) {
+function searchFoursquare(lat, long, search, locArray, category) {
   var url = 'https://api.foursquare.com/v2/venues/search?ll=' + lat + ',' + long + '&query=' + search + '&client_id='+ client_id + '&client_secret=' + client_secret + '&v=20170830&m=foursquare';
 
   var fsRequestTimeout = setTimeout(function(){
@@ -369,6 +369,8 @@ function searchFoursquare(lat, long, search, locArray) {
       var venues = data.response.venues;
 
       venues.forEach(function(data, index) {
+        if(data.categories.length > 0){
+
         var newVenue = {
           title: data.name,
           location: {lat: data.location.lat, lng: data.location.lng},
@@ -377,10 +379,21 @@ function searchFoursquare(lat, long, search, locArray) {
         };
         createMarker(newVenue, index)
         locArray.push(newVenue);
+      }
       });
       clearTimeout(fsRequestTimeout);
+
+      category.removeAll();
+      for(var data in locArray()) {
+        console.log(locArray()[data])
+
+        if(category().indexOf(locArray()[data].category) < 0){
+          category.push(locArray()[data].category)
+        }
+      }
     }
   })
+
 }
 
 function createMarker(loc, index) {
