@@ -1,6 +1,5 @@
 'use strict';
-var map;
-var infoWindow;
+var map, infoWindow, defaultColor, selectedColor;;
 var markers = [];
 var locs = [
   {
@@ -99,8 +98,6 @@ var styles = [
     ]
   }
 ];
-var defaultColor;
-var selectedColor;
 var polygon = null;
 
 var client_id = 'FAXWGJU1T5JKZMQBVUFBBZ0CK1ZXP130JWQ0TMQW33LTIV0C';
@@ -236,32 +233,6 @@ var ViewModel = function() {
     polygon.getPath().addListener('insert_at', searchWithinPolygon);
   })
 
-  var url = 'https://api.foursquare.com/v2/venues/categories?&client_id='+ client_id + '&client_secret=' + client_secret + '&v=20170830&m=foursquare';
-
-  // var fsRequestTimeout = setTimeout(function(){
-  //   window.alert('Failed to get foursquare resources');
-  // }, 8000);
-
-  // $.ajax({
-  //   url: url,
-  //   dataType: 'jsonp',
-  //   success: function(data) {
-  //     var entertainment = data.response.categories[0].categories;
-  //
-  //     entertainment.forEach(function(data) {
-  //       if(data.categories.length > 0) {
-  //         data.categories.forEach(function(element) {
-  //           self.categories.push(element);
-  //         })
-  //       } else {
-  //         self.categories.push(data);
-  //       }
-  //     });
-  //
-  //     console.log(self.categories());
-  //     clearTimeout(fsRequestTimeout);
-  //   }
-  // })
   locs.forEach(function(data){
     if(self.categories().indexOf(data.category) < 0){
       self.categories.push(data.category)
@@ -407,7 +378,6 @@ function searchFoursquare(lat, long, search, locArray) {
         createMarker(newVenue, index)
         locArray.push(newVenue);
       });
-      console.log(locs)
       clearTimeout(fsRequestTimeout);
     }
   })
