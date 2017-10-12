@@ -276,7 +276,7 @@ function searchWithinPolygon(locArray) {
   markers.forEach(function(data, index){
     if (google.maps.geometry.poly.containsLocation(data.position, polygon)) {
       data.setMap(map);
-      //locArray[index].visible(true);
+      locArray[index].visible(true);
     } else {
       data.setMap(null);
       locArray[index].visible(false);
