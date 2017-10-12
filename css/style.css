@@ -51,6 +51,10 @@ html, body {
   position: fixed;
 }
 
+h1 {
+  padding: 20px;
+}
+
 select {
   font-size: 10px;
 }
@@ -80,7 +84,7 @@ li {
 }
 
 .search {
-  margin: 100px 10px 0px 10px;
+  margin: 0px 10px 0px 10px;
   display: flex;
   justify-content: space-around;
 }
