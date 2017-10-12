@@ -385,9 +385,11 @@ function searchFoursquare(lat, long, search, locArray, category) {
 
       category.removeAll();
       for(var data in locArray()) {
-        console.log(locArray()[data])
 
         if(category().indexOf(locArray()[data].category) < 0){
+          if(locArray()[data].category.length > 25) {
+            locArray()[data].category = locArray()[data].category.substring(0,24)+"...";
+          }
           category.push(locArray()[data].category)
         }
       }

@@ -73,9 +73,7 @@ select {
 }
 
 li {
-  right: 0px;
-  left: 0px;
-  width: 100%;
+  width: 70%;
   list-style: none;
   padding: 30px;
   border-top: 1px solid #D0D7D9;
