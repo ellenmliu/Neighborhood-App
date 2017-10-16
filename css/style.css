@@ -65,8 +65,14 @@ select {
   justify-content: space-around;
 }
 
+.attribution {
+  text-align:right;
+  padding: 5px 25px 0px 0px;
+  font-size:12px;
+}
+
 .filter-box {
-  margin-top: 20px;
+  margin-top: 10px;
   display: flex;
   justify-content: space-around;
 }
