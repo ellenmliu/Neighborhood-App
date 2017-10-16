@@ -306,8 +306,13 @@ function showInfoWindow(marker, infoWindow) {
       if(status == google.maps.StreetViewStatus.OK) {
         var nearStreetViewLocation = data.location.latLng;
         var heading = google.maps.geometry.spherical.computeHeading(nearStreetViewLocation, marker.position);
-        infoWindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
 
+        if(marker.id) {
+          var link = 'https://foursquare.com/v/' + marker.id
+          infoWindow.setContent('<a href="'+link+'" target="_blank">' + marker.title + '</a><div id="pano"></div><div>Powered by Foursquare</div>');
+        } else {
+          infoWindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
+        }
         var panoramaOptions = {
           position: nearStreetViewLocation,
           pov: {
@@ -372,7 +377,8 @@ function searchFoursquare(lat, long, search, locArray, category) {
           title: data.name,
           location: {lat: data.location.lat, lng: data.location.lng},
           visible: ko.observable(true),
-          category: data.categories[0].name
+          category: data.categories[0].name,
+          id: data.id
         };
         createMarker(newVenue, index)
         locArray.push(newVenue);
@@ -398,6 +404,7 @@ function searchFoursquare(lat, long, search, locArray, category) {
 function createMarker(loc, index) {
   var position = loc.location;
   var title = loc.title;
+  var id = loc.id
 
   var marker = new google.maps.Marker({
     map: map,
@@ -405,7 +412,8 @@ function createMarker(loc, index) {
     title: title,
     position: position,
     animation: google.maps.Animation.DROP,
-    id: index
+    index: index,
+    id: id
   })
 
   markers.push(marker);
