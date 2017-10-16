@@ -214,7 +214,6 @@ var ViewModel = function() {
         self.locations()[data].visible(false);
       }
     }
-    console.log(locs)
   }
 
   drawingManager.addListener('overlaycomplete', function(event) {
@@ -272,7 +271,6 @@ function makeMarkerIcon(color) {
 }
 
 function searchWithinPolygon(locArray) {
-  console.log(locArray);
   markers.forEach(function(data, index){
     if (google.maps.geometry.poly.containsLocation(data.position, polygon)) {
       data.setMap(map);
@@ -359,7 +357,6 @@ function searchFoursquare(lat, long, search, locArray, category) {
     dataType: 'jsonp',
     success: function(data) {
       locArray.removeAll();
-
       markers.forEach(function(data) {
         data.setMap(null);
       })
