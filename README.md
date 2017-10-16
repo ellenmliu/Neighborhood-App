@@ -3,7 +3,7 @@ Author: Ellen Liu
 Last Edit: 10/16/2017
 
 ## Description of this app
-This application shows places of interest around a location. It uses Google Maps API to display information about the location and calculates routes to the selected location.
+This application shows places of interest around a location. It uses Google Maps API to display information about the location. It is powered by Foursquare. I used jQuery, HTML, CSS, and Knockout.js to make this application.
 
 ## Download the Source Code
 Download the ZIP file or from the terminal, run:
