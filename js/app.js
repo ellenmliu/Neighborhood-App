@@ -1,5 +1,5 @@
 'use strict';
-var map, infoWindow, defaultColor, selectedColor;;
+var map, infoWindow, defaultColor, selectedColor;
 var markers = [];
 var locs = [
   {
@@ -31,7 +31,7 @@ var locs = [
     location: {lat:  37.801339, lng: -122.458599},
     visible: ko.observable(true),
     category: 'History Museum'
-  }]
+  }];
 var styles = [
   {
     featureType: 'water',
@@ -103,7 +103,7 @@ var polygon = null;
 var client_id = 'FAXWGJU1T5JKZMQBVUFBBZ0CK1ZXP130JWQ0TMQW33LTIV0C';
 var client_secret = '52TF4CEXKTNKN1HSRREGPWPDVSRA0030ST2H5RG3XQ2IGLWD';
 
-var Map = function() {
+var GoogleMap = function() {
   // Initialize background with a map of San Francisco as default
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 37.77493, lng: -122.419416},
@@ -112,7 +112,7 @@ var Map = function() {
   });
 
   infoWindow = new google.maps.InfoWindow();
-}
+};
 
 var ViewModel = function() {
   var self = this;
@@ -121,7 +121,7 @@ var ViewModel = function() {
   self.locations = ko.observableArray([]);
   self.categories = ko.observableArray([]);
 
-  var currentMap = new Map();
+  var currentMap = new GoogleMap();
 
   var drawingManager = new google.maps.drawing.DrawingManager({
     drawingMode: google.maps.drawing.OverlayType.POLYGON,
@@ -148,37 +148,37 @@ var ViewModel = function() {
     });
     var selected = markers.find(function(element) {
       return element.title == thisListing.title;
-    })
+    });
     selected.setIcon(selectedColor);
     showInfoWindow(selected, infoWindow);
-  }
+  };
 
   // Sets the boolean to the opposite of itself
   self.toggleHamburger = function() {
     self.hamburger(!self.hamburger());
-  }
+  };
 
   self.showListings = function() {
     var bounds = new google.maps.LatLngBounds();
     markers.forEach(function(data) {
       data.setMap(map);
       bounds.extend(data.position);
-    })
+    });
 
     for(var data in self.locations()) {
       self.locations()[data].visible(true);
     }
     map.fitBounds(bounds);
-  }
+  };
 
   self.hideListings = function() {
     markers.forEach(function(data) {
       data.setMap(null);
-    })
+    });
     for(var data in self.locations()) {
       self.locations()[data].visible(false);
     }
-  }
+  };
 
   self.toggleDrawing = function() {
     if(drawingManager.map) {
@@ -190,19 +190,19 @@ var ViewModel = function() {
       drawingManager.setMap(map);
     }
     self.hamburger(!self.hamburger());
-  }
+  };
 
   self.zoom = function() {
     var searchFor = $('#zoom-to-area-text').val();
     searchFoursquare(37.77493, -122.419416, searchFor, self.locations, self.categories);
     zoomToArea();
-  }
+  };
 
   self.filter = function() {
     var category = $('#filters').val();
     markers.forEach(function(data) {
       data.setMap(null);
-    })
+    });
 
     markers = [];
 
@@ -214,7 +214,7 @@ var ViewModel = function() {
         self.locations()[data].visible(false);
       }
     }
-  }
+  };
 
   drawingManager.addListener('overlaycomplete', function(event) {
     if(polygon) {
@@ -230,14 +230,14 @@ var ViewModel = function() {
 
     polygon.getPath().addListener('set_at', searchWithinPolygon);
     polygon.getPath().addListener('insert_at', searchWithinPolygon);
-  })
+  });
 
   locs.forEach(function(data){
     if(self.categories().indexOf(data.category) < 0){
-      self.categories.push(data.category)
+      self.categories.push(data.category);
     }
-  })
-}
+  });
+};
 
 // Toggles between the animation between the hamburger icon and a close icon
 ko.bindingHandlers.transition = {
@@ -308,7 +308,7 @@ function showInfoWindow(marker, infoWindow) {
         var heading = google.maps.geometry.spherical.computeHeading(nearStreetViewLocation, marker.position);
 
         if(marker.id) {
-          var link = 'https://foursquare.com/v/' + marker.id
+          var link = 'https://foursquare.com/v/' + marker.id;
           infoWindow.setContent('<a href="'+link+'" target="_blank">' + marker.title + '</a><div id="pano"></div><div>Powered by Foursquare</div>');
         } else {
           infoWindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
@@ -336,7 +336,7 @@ function zoomToArea() {
   var geocoder = new google.maps.Geocoder();
   var address = document.getElementById('zoom-to-area').value;
 
-  if(address == '') {
+  if(address === '') {
     window.alert('You must enter a location');
   } else {
     geocoder.geocode({address: address, componentRestrictions: {locality: 'San Francisco'}}, function(results, status) {
@@ -364,7 +364,7 @@ function searchFoursquare(lat, long, search, locArray, category) {
       locArray.removeAll();
       markers.forEach(function(data) {
         data.setMap(null);
-      })
+      });
 
       markers = [];
 
@@ -380,31 +380,31 @@ function searchFoursquare(lat, long, search, locArray, category) {
           category: data.categories[0].name,
           id: data.id
         };
-        createMarker(newVenue, index)
+        createMarker(newVenue, index);
         locArray.push(newVenue);
       }
       });
       clearTimeout(fsRequestTimeout);
 
       category.removeAll();
-      for(var data in locArray()) {
+      for(var element in locArray()) {
 
-        if(category().indexOf(locArray()[data].category) < 0){
-          if(locArray()[data].category.length > 25) {
-            locArray()[data].category = locArray()[data].category.substring(0,24)+"...";
+        if(category().indexOf(locArray()[element].category) < 0){
+          if(locArray()[element].category.length > 25) {
+            locArray()[element].category = locArray()[element].category.substring(0,24)+"...";
           }
-          category.push(locArray()[data].category)
+          category.push(locArray()[element].category);
         }
       }
     }
-  })
+  });
 
 }
 
 function createMarker(loc, index) {
   var position = loc.location;
   var title = loc.title;
-  var id = loc.id
+  var id = loc.id;
 
   var marker = new google.maps.Marker({
     map: map,
@@ -414,7 +414,7 @@ function createMarker(loc, index) {
     animation: google.maps.Animation.DROP,
     index: index,
     id: id
-  })
+  });
 
   markers.push(marker);
 
