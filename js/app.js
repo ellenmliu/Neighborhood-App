@@ -1,4 +1,3 @@
-'use strict';
 var map, infoWindow, defaultColor, selectedColor;
 var markers = [];
 var locs = [
