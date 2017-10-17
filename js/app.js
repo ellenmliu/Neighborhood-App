@@ -310,36 +310,38 @@ function showInfoWindow(marker, infoWindow) {
     var streetview = new google.maps.StreetViewService();
     var radius = 50;
 
-    // If the street view panorama is found, then calculate the position and heading
-    // to get the panorama of the area and the info window will display the image.
-    // Otherwise, it will indicate to the user that the street view is not found
-    function getStreetView(data, status) {
-      if(status == google.maps.StreetViewStatus.OK) {
-        var nearStreetViewLocation = data.location.latLng;
-        var heading = google.maps.geometry.spherical.computeHeading(nearStreetViewLocation, marker.position);
-
-        if(marker.id) {
-          var link = 'https://foursquare.com/v/' + marker.id;
-          infoWindow.setContent('<a href="'+link+'" target="_blank">' + marker.title + '</a><div id="pano"></div><div>Powered by Foursquare</div>');
-        } else {
-          infoWindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
-        }
-        var panoramaOptions = {
-          position: nearStreetViewLocation,
-          pov: {
-            heading: heading,
-            pitch: 30
-          }
-        };
-
-        var panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'), panoramaOptions);
-      } else {
-        infoWindow.setContent('<div>' + marker.title + '</div><div>No Street View Found</div>');
-      }
+    if(marker.id) {
+      var link = 'https://foursquare.com/v/' + marker.id;
+      infoWindow.setContent('<a href="'+link+'" target="_blank">' + marker.title + '</a><div id="pano"></div><div>Powered by Foursquare</div>');
+    } else {
+      infoWindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
     }
+
     streetview.getPanoramaByLocation(marker.position, radius, getStreetView);
 
     infoWindow.open(map, marker);
+  }
+}
+
+// If the street view panorama is found, then calculate the position and heading
+// to get the panorama of the area and the info window will display the image.
+// Otherwise, it will indicate to the user that the street view is not found
+function getStreetView(data, status) {
+  if(status == google.maps.StreetViewStatus.OK) {
+    var nearStreetViewLocation = data.location.latLng;
+    var heading = google.maps.geometry.spherical.computeHeading(nearStreetViewLocation, data.location.latLng);
+
+    var panoramaOptions = {
+      position: nearStreetViewLocation,
+      pov: {
+        heading: heading,
+        pitch: 30
+      }
+    };
+
+    var panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'), panoramaOptions);
+  } else {
+    infoWindow.setContent('<div>' + marker.title + '</div><div>No Street View Found</div>');
   }
 }
 
