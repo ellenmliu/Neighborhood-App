@@ -72,7 +72,9 @@ var ViewModel = function() {
         self.locations()[data].visible(true);
       }
     }
-    map.fitBounds(bounds);
+    google.maps.event.addDomListener(window, 'resize', function() {
+      map.fitBounds(bounds); // `bounds` is a `LatLngBounds` object
+    });
   };
 
   self.hideListings = function() {
