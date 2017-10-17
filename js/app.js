@@ -120,7 +120,7 @@ var ViewModel = function() {
   self.locations = ko.observableArray([]);
   self.categories = ko.observableArray([]);
 
-  var currentMap = new GoogleMap();
+  GoogleMap();
 
   var drawingManager = new google.maps.drawing.DrawingManager({
     drawingMode: google.maps.drawing.OverlayType.POLYGON,
