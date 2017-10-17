@@ -166,7 +166,9 @@ var ViewModel = function() {
     });
 
     for(var data in self.locations()) {
-      self.locations()[data].visible(true);
+      if (self.locations().hasOwnProperty(data)) {
+        self.locations()[data].visible(true);
+      }
     }
     map.fitBounds(bounds);
   };
@@ -176,7 +178,9 @@ var ViewModel = function() {
       data.setMap(null);
     });
     for(var data in self.locations()) {
-      self.locations()[data].visible(false);
+      if (self.locations().hasOwnProperty(data)) {
+        self.locations()[data].visible(false);
+      }
     }
   };
 
