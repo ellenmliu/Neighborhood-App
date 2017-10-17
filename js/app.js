@@ -248,7 +248,11 @@ ko.bindingHandlers.transition = {
     var value = valueAccessor();
     var valueUnwrapped = ko.unwrap(value);
 
-    valueUnwrapped? element.classList.add("change") : element.classList.remove("change");
+    if (valueUnwrapped){
+      element.classList.add("change");
+    } else {
+      element.classList.remove("change");
+    }
   }
 };
 
@@ -258,7 +262,11 @@ ko.bindingHandlers.slide = {
     var value = valueAccessor();
     var valueUnwrapped = ko.unwrap(value);
 
-    valueUnwrapped? element.style.width = "250px" : element.style.width = "0px";
+    if (valueUnwrapped) {
+      element.style.width = "250px";
+    } else {
+      element.style.width = "0px";
+    }
   }
 };
 
