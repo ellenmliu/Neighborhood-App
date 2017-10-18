@@ -355,3 +355,7 @@ function createMarker(loc, index) {
 function init() {
   ko.applyBindings(new ViewModel());
 }
+
+function mapError() {
+  alert("Error loading map");
+}
