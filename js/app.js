@@ -23,6 +23,7 @@ var ViewModel = function() {
   self.locations = ko.observableArray([]);
   self.categories = ko.observableArray([]);
   self.filter = ko.observable('');
+  self.searchFor = ko.observable('');
 
   GoogleMap();
 
@@ -102,8 +103,7 @@ var ViewModel = function() {
   };
 
   self.zoom = function() {
-    var searchFor = $('#zoom-to-area-text').val();
-    searchFoursquare(37.77493, -122.419416, searchFor, self.locations, self.categories);
+    searchFoursquare(37.77493, -122.419416, self.searchFor(), self.locations, self.categories);
     zoomToArea();
   };
 
