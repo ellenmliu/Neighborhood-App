@@ -104,7 +104,7 @@ var ViewModel = function() {
 
   self.zoom = function() {
     searchFoursquare(37.77493, -122.419416, self.searchFor(), self.locations, self.categories);
-    zoomToArea();
+    zoomToArea(self.searchFor());
   };
 
   self.filteredItems = ko.computed(function() {
@@ -261,9 +261,9 @@ function getStreetView(data, status) {
   }
 }
 
-function zoomToArea() {
+function zoomToArea(area) {
   var geocoder = new google.maps.Geocoder();
-  var address = document.getElementById('zoom-to-area').value;
+  var address = area;
 
   if(address === '') {
     window.alert('You must enter a location');
@@ -271,7 +271,7 @@ function zoomToArea() {
     geocoder.geocode({address: address, componentRestrictions: {locality: 'San Francisco'}}, function(results, status) {
       if(status == google.maps.GeocoderStatus.OK) {
         map.setCenter(results[0].geometry.location);
-        map.setZoom(14);
+        map.setZoom(13);
       } else {
         window.alert('Location could not be found. Try entering a more specific location.');
       }
