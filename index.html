@@ -13,35 +13,35 @@
 </head>
 
 <body>
-  <div class="container">
-    <div id="map"></div>
-    <div class="hamburger" data-bind="click: toggleHamburger, transition: hamburger">
+  <main class="container">
+    <map id="map"></map>
+    <button class="hamburger" data-bind="click: toggleHamburger, transition: hamburger">
       <div class="bar1"></div>
       <div class="bar2"></div>
       <div class="bar3"></div>
-    </div>
-    <div class="options-box" data-bind="slide: hamburger">
+    </button>
+    <aside class="options-box" data-bind="slide: hamburger">
       <h1>Places in San Francisco</h1>
-      <div class="search">
+      <section class="search">
         <input id="zoom-to-area-text" type="text" placeholder="Enter your favorite area!" data-bind="textInput: searchFor">
         <input id="zoom-to-area" type="button" value="Zoom" data-bind="click:zoom">
-      </div>
-      <div class="attribution">Powered by Foursquare</div>
-      <div class="filter-box">
+      </section>
+      <p class="attribution">Powered by Foursquare</p>
+      <section class="filter-box">
         <select id="filters" data-bind="options: categories, value: filter">
         </select>
-      </div>
-      <div class="options">
+      </section>
+      <section class="options">
         <input id="show-listings" type="button" value="Show" data-bind="click: showListings">
         <input id="show-listings" type="button" value="Hide" data-bind="click: hideListings">
         <input id="toggle-drawing" type="button" value="Drawing Tool" data-bind="click: toggleDrawing">
-      </div>
+      </section>
 
       <ul class="listoflocs" data-bind="foreach: filteredItems">
         <li class="locationSelect" data-bind="text: title, click: $parent.selectListing"></li>
       </ul>
-    </div>
-  </div>
+    </aside>
+  </main>
   <script src="js/libs/jquery.min.js"></script>
   <script src="js/libs/knockout-3.2.0.js"></script>
   <script type="text/javascript" src="js/appdata.js"></script>

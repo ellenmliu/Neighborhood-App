@@ -22,6 +22,15 @@ html, body {
   position: relative;
 }
 
+button {
+  background: none;
+  border: none;
+}
+
+button:focus{
+  outline: none;
+}
+
 .hamburger {
   margin: 50px 20px;
   display: inline-block;
