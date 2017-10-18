@@ -22,6 +22,7 @@ var ViewModel = function() {
   self.hamburger = ko.observable(false);
   self.locations = ko.observableArray([]);
   self.categories = ko.observableArray([]);
+  self.filter = ko.observable('');
 
   GoogleMap();
 
@@ -106,23 +107,32 @@ var ViewModel = function() {
     zoomToArea();
   };
 
-  self.filter = function() {
-    var category = $('#filters').val();
-    markers.forEach(function(data) {
-      data.setMap(null);
+  self.filteredItems = ko.computed(function() {
+        var filter = self.filter();
+        markers.forEach(function(data) {
+          data.setMap(null);
+        });
+
+        markers = [];
+        for(var data in self.locations()) {
+          if (!filter || filter == "All") {
+            createMarker(self.locations()[data],data);
+          } else if(self.locations()[data].category == filter) {
+            self.locations()[data].visible(true);
+            createMarker(self.locations()[data],data);
+          } else {
+            self.locations()[data].visible(false);
+          }
+        }
+
+        if (!filter || filter == "All") {
+            return self.locations();
+        } else {
+            return ko.utils.arrayFilter(self.locations(), function(data) {
+              return data.category == filter;
+            });
+        }
     });
-
-    markers = [];
-
-    for(var data in self.locations()) {
-      if(self.locations()[data].category == category) {
-        self.locations()[data].visible(true);
-        createMarker(self.locations()[data],data);
-      } else {
-        self.locations()[data].visible(false);
-      }
-    }
-  };
 
   drawingManager.addListener('overlaycomplete', function(event) {
     if(polygon) {
@@ -140,6 +150,7 @@ var ViewModel = function() {
     polygon.getPath().addListener('insert_at', searchWithinPolygon);
   });
 
+  self.categories.push("All");
   locs.forEach(function(data){
     if(self.categories().indexOf(data.category) < 0){
       self.categories.push(data.category);
@@ -305,8 +316,8 @@ function searchFoursquare(lat, long, search, locArray, category) {
       clearTimeout(fsRequestTimeout);
 
       category.removeAll();
+      category.push("All");
       for(var element in locArray()) {
-
         if(category().indexOf(locArray()[element].category) < 0){
           if(locArray()[element].category.length > 25) {
             locArray()[element].category = locArray()[element].category.substring(0,24)+"...";

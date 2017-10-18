@@ -28,10 +28,8 @@
       </div>
       <div class="attribution">Powered by Foursquare</div>
       <div class="filter-box">
-        <select id="filters" data-bind="foreach: categories">
-          <option data-bind="text: $data"></option>
+        <select id="filters" data-bind="options: categories, value: filter">
         </select>
-        <input type="button" value="Filter" data-bind="click:filter">
       </div>
       <div class="options">
         <input id="show-listings" type="button" value="Show" data-bind="click: showListings">
@@ -39,8 +37,8 @@
         <input id="toggle-drawing" type="button" value="Drawing Tool" data-bind="click: toggleDrawing">
       </div>
 
-      <ul class="listoflocs" data-bind="foreach: locations">
-        <li class="locationSelect" data-bind="text: title, click: $parent.selectListing, visible: $data.visible()"></li>
+      <ul class="listoflocs" data-bind="foreach: filteredItems">
+        <li class="locationSelect" data-bind="text: title, click: $parent.selectListing"></li>
       </ul>
     </div>
   </div>
