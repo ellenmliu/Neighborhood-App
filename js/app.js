@@ -283,8 +283,7 @@ function searchFoursquare(lat, long, search, locArray, category) {
   var url = 'https://api.foursquare.com/v2/venues/search?ll=' + lat + ',' + long + '&query=' + search + '&client_id='+ client_id + '&client_secret=' + client_secret + '&v=20170830&m=foursquare';
 
   $.ajax({
-    url: url,
-    dataType: 'jsonp'
+    url: url
     }).done(function(data) {
       locArray.removeAll();
       markers.forEach(function(data) {
@@ -323,7 +322,6 @@ function searchFoursquare(lat, long, search, locArray, category) {
     }).fail(function(jqXHR, textStatus) {
       alert("Request failed: " + textStatus);
     });
-
 }
 
 function createMarker(loc, index) {
