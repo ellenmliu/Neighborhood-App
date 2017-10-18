@@ -282,14 +282,10 @@ function zoomToArea(area) {
 function searchFoursquare(lat, long, search, locArray, category) {
   var url = 'https://api.foursquare.com/v2/venues/search?ll=' + lat + ',' + long + '&query=' + search + '&client_id='+ client_id + '&client_secret=' + client_secret + '&v=20170830&m=foursquare';
 
-  var fsRequestTimeout = setTimeout(function(){
-    window.alert('Failed to get foursquare resources');
-  }, 8000);
-
   $.ajax({
     url: url,
-    dataType: 'jsonp',
-    success: function(data) {
+    dataType: 'jsonp'
+    }).done(function(data) {
       locArray.removeAll();
       markers.forEach(function(data) {
         data.setMap(null);
@@ -311,9 +307,8 @@ function searchFoursquare(lat, long, search, locArray, category) {
         };
         createMarker(newVenue, index);
         locArray.push(newVenue);
-      }
+        }
       });
-      clearTimeout(fsRequestTimeout);
 
       category.removeAll();
       category.push("All");
@@ -325,8 +320,9 @@ function searchFoursquare(lat, long, search, locArray, category) {
           category.push(locArray()[element].category);
         }
       }
-    }
-  });
+    }).fail(function(jqXHR, textStatus) {
+      alert("Request failed: " + textStatus);
+    });
 
 }
 
