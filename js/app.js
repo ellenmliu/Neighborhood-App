@@ -236,7 +236,9 @@ function showInfoWindow(marker, infoWindow) {
       var alltips = data.response.tips.items;
       content = content + '<section class = "tips"><h2>Tips</h2>';
       for(var i = 0; i < 3; i++) {
-        content = content +  '<p>' + alltips[i].text + ' -<i>'+ alltips[i].user.firstName + '</i></p>';
+        if(alltips[i]) {
+          content = content +  '<p>' + alltips[i].text + ' -<i>'+ alltips[i].user.firstName + '</i></p>';
+        }
       }
       content = content + '</section>';
       infoWindow.setContent(content);
