@@ -13,7 +13,7 @@ var GoogleMap = function() {
     styles: styles
   });
 
-  infoWindow = new google.maps.InfoWindow();
+  infoWindow = new google.maps.InfoWindow({maxWidth: 200});
 };
 
 var ViewModel = function() {
@@ -226,14 +226,27 @@ function showInfoWindow(marker, infoWindow) {
     var streetview = new google.maps.StreetViewService();
     var radius = 50;
 
-    if(marker.id) {
-      var link = 'https://foursquare.com/v/' + marker.id;
-      infoWindow.setContent('<a href="'+link+'" target="_blank">' + marker.title + '</a><div id="pano"></div><div>Powered by Foursquare</div>');
-    } else {
-      infoWindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
-    }
+    var link = 'https://foursquare.com/v/' + marker.id;
+    var url = 'https://api.foursquare.com/v2/venues/'+marker.id+'/tips?sort=recent&client_id='+ client_id + '&client_secret=' + client_secret + '&v=20170830';
+    var content = '<h1><a href="'+link+'" target="_blank">' + marker.title + '</a></h1><div id="pano"></div><p>Powered by Foursquare</p>';
 
-    streetview.getPanoramaByLocation(marker.position, radius, getStreetView);
+    $.ajax({
+      url: url
+    }).done(function (data) {
+      var alltips = data.response.tips.items;
+      content = content + '<section class = "tips"><h2>Tips</h2>';
+      for(var i = 0; i < 3; i++) {
+        content = content +  '<p>' + alltips[i].text + ' -<i>'+ alltips[i].user.firstName + '</i></p>';
+      }
+      content = content + '</section>';
+      infoWindow.setContent(content);
+      streetview.getPanoramaByLocation(marker.position, radius, getStreetView);
+      infoWindow.open(map, marker);
+    }).fail(function (jqXHR, textStatus) {
+      alert('Error retrieving tips');
+      infoWindow.setContent(content);
+      streetview.getPanoramaByLocation(marker.position, radius, getStreetView);
+    });
 
     infoWindow.open(map, marker);
   }

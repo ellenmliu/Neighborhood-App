@@ -3,31 +3,36 @@ var locs = [
   title: 'Exploratorium',
   location: {lat: 37.800797, lng: -122.398868},
   visible: ko.observable(true),
-  category: 'Science Museum'
+  category: 'Science Museum',
+  id: '4585a93ef964a520ac3f1fe3'
 },
 {
   title: 'Union Square',
   location: {lat:  37.788014, lng: -122.407477},
   visible: ko.observable(true),
-  category: 'Museum'
+  category: 'Museum',
+  id: '40bbc700f964a520b1001fe3'
 },
 {
   title: 'AT&T Park',
   location:{lat: 37.779208, lng: -122.390157},
   visible: ko.observable(true),
-  category: 'Baseball Stadium'
+  category: 'Baseball Stadium',
+  id: '4bd2177d046076b055357371'
 },
 {
   title: 'Golden Gate Park',
   location: {lat: 37.769421, lng: -122.486214},
   visible: ko.observable(true),
-  category: 'Museum'
+  category: 'Museum',
+  id: '445e36bff964a520fb321fe3'
 },
 {
   title: 'Walt Disney Museum',
   location: {lat:  37.801339, lng: -122.458599},
   visible: ko.observable(true),
-  category: 'History Museum'
+  category: 'History Museum',
+  id: '4ab52af0f964a520f27220e3'
 }];
 
 var styles = [
