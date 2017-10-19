@@ -1,6 +1,6 @@
 # Neighborhood App
 Author: Ellen Liu
-Last Edit: 10/16/2017
+Last Edit: 10/19/2017
 
 ## Description of this app
 This application shows places of interest around a location. It uses Google Maps API to display information about the location. It is powered by Foursquare. I used jQuery, HTML, CSS, and Knockout.js to make this application.
